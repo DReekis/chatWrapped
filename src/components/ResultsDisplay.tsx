@@ -16,6 +16,7 @@ interface ResultsDisplayProps {
 export default function ResultsDisplay({ result, onReset }: ResultsDisplayProps) {
     const [currentScene, setCurrentScene] = useState(0);
     const [showVideoExporter, setShowVideoExporter] = useState(false);
+    const [showInfoModal, setShowInfoModal] = useState(false);
     const scorecardRef = useRef<HTMLDivElement>(null);
     const storyContainerRef = useRef<HTMLDivElement>(null);
 
@@ -697,11 +698,89 @@ export default function ResultsDisplay({ result, onReset }: ResultsDisplayProps)
                     />
                 </div>
 
-                {/* Scene indicator */}
-                <div className="absolute bottom-2 left-1/2 -translate-x-1/2 text-xs text-gray-500">
-                    Tap sides to navigate
+                {/* Scene indicator + Info button */}
+                <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex items-center gap-4">
+                    <span className="text-xs text-gray-500">Tap sides to navigate</span>
+                    <button
+                        onClick={() => setShowInfoModal(true)}
+                        className="text-xs text-pink-400 hover:text-pink-300 underline"
+                    >
+                        ❓ What do these mean?
+                    </button>
                 </div>
             </div>
+
+            {/* Info/Legend Modal */}
+            <AnimatePresence>
+                {showInfoModal && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+                        onClick={() => setShowInfoModal(false)}
+                    >
+                        <motion.div
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.9, opacity: 0 }}
+                            onClick={(e) => e.stopPropagation()}
+                            className="bg-gray-900 border border-white/10 rounded-2xl p-5 max-w-md w-full max-h-[80vh] overflow-y-auto"
+                        >
+                            <h3 className="text-xl font-bold text-white mb-4">📊 What Do These Stats Mean?</h3>
+
+                            <div className="space-y-4 text-sm">
+                                <div className="bg-white/5 rounded-lg p-3">
+                                    <p className="text-pink-400 font-bold">💘 Simp Meter</p>
+                                    <p className="text-gray-400">Who sends more messages in the chat. The higher percentage = more invested in conversations.</p>
+                                </div>
+
+                                <div className="bg-white/5 rounded-lg p-3">
+                                    <p className="text-red-400 font-bold">🚩 Red Flag Counter</p>
+                                    <p className="text-gray-400">Counts phrases like "k", "whatever", "theek hai" - signs of passive aggression or disinterest.</p>
+                                </div>
+
+                                <div className="bg-white/5 rounded-lg p-3">
+                                    <p className="text-blue-400 font-bold">🏆 Apology Olympics</p>
+                                    <p className="text-gray-400">Who says sorry more. Could mean they care more... or they mess up more! 😅</p>
+                                </div>
+
+                                <div className="bg-white/5 rounded-lg p-3">
+                                    <p className="text-green-400 font-bold">👀 Jealousy Radar</p>
+                                    <p className="text-gray-400">Detects messages about "who was that", "why didn&apos;t you reply", checking up behavior.</p>
+                                </div>
+
+                                <div className="bg-white/5 rounded-lg p-3">
+                                    <p className="text-amber-400 font-bold">✨ Main Character Energy</p>
+                                    <p className="text-gray-400">% of messages that are self-focused ("I", "me", "my"). Higher = more main character vibes.</p>
+                                </div>
+
+                                <div className="bg-white/5 rounded-lg p-3">
+                                    <p className="text-purple-400 font-bold">🌙 Night Owl Score</p>
+                                    <p className="text-gray-400">% of messages sent between midnight and 5 AM. Late night chats = special bond.</p>
+                                </div>
+
+                                <div className="bg-white/5 rounded-lg p-3">
+                                    <p className="text-gray-300 font-bold">👻 Ghost Score</p>
+                                    <p className="text-gray-400">Messages left on "seen" for hours. Higher = more ghosting behavior.</p>
+                                </div>
+
+                                <div className="bg-white/5 rounded-lg p-3">
+                                    <p className="text-pink-400 font-bold">👯 Compatibility Score</p>
+                                    <p className="text-gray-400">A weighted score based on love words, red flags, jealousy, and communication balance.</p>
+                                </div>
+                            </div>
+
+                            <button
+                                onClick={() => setShowInfoModal(false)}
+                                className="w-full mt-4 py-3 bg-gradient-to-r from-pink-500 to-purple-500 rounded-xl text-white font-medium"
+                            >
+                                Got it! 👍
+                            </button>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
             {/* Video Exporter Modal */}
             <AnimatePresence>

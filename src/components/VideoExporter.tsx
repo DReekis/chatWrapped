@@ -24,7 +24,7 @@ export default function VideoExporter({ videoProps, onClose }: VideoExporterProp
     const framesRef = useRef<Blob[]>([]);
 
     const FPS = 30;
-    const DURATION_FRAMES = 1200; // 40 seconds at 30fps
+    const DURATION_FRAMES = 1500; // 50 seconds at 30fps
     const DURATION_SECONDS = DURATION_FRAMES / FPS;
 
     // Load FFmpeg
@@ -203,7 +203,7 @@ export default function VideoExporter({ videoProps, onClose }: VideoExporterProp
 
         const a = document.createElement('a');
         a.href = downloadUrl;
-        a.download = `ishq-audit-${Date.now()}.mp4`;
+        a.download = `chatwrapped-${Date.now()}.mp4`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -276,14 +276,19 @@ export default function VideoExporter({ videoProps, onClose }: VideoExporterProp
 
             {/* Error */}
             {status === 'error' && (
-                <div className="mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-center">
-                    <p className="text-red-400">{message}</p>
-                    <button
-                        onClick={() => setStatus('idle')}
-                        className="mt-2 text-sm text-white underline"
-                    >
-                        Try again
-                    </button>
+                <div className="mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-center max-w-sm">
+                    <p className="text-red-400 mb-2">⚠️ {message}</p>
+                    <p className="text-gray-400 text-xs mb-3">
+                        Tip: Try using screen recording instead!
+                    </p>
+                    <div className="flex gap-2 justify-center">
+                        <button
+                            onClick={() => setStatus('idle')}
+                            className="px-4 py-2 bg-white/10 rounded-lg text-sm text-white"
+                        >
+                            Try again
+                        </button>
+                    </div>
                 </div>
             )}
 
@@ -328,7 +333,7 @@ export default function VideoExporter({ videoProps, onClose }: VideoExporterProp
                 {status === 'idle'
                     ? 'Creates a 30-second MP4 video perfect for Instagram Stories & WhatsApp Status!'
                     : status === 'done'
-                        ? 'Share your Ishq Audit video with friends! 💕'
+                        ? 'Share your ChatWrapped video with friends! 💕'
                         : 'Please wait while we create your video...'}
             </p>
         </motion.div>
