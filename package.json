@@ -9,9 +9,18 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@ffmpeg/ffmpeg": "^0.12.15",
+    "@ffmpeg/util": "^0.12.2",
+    "@remotion/cli": "^4.0.419",
+    "@remotion/player": "^4.0.419",
+    "framer-motion": "^12.33.0",
+    "html2canvas": "^1.4.1",
+    "jszip": "^3.10.1",
+    "modern-screenshot": "^4.6.8",
     "next": "16.1.6",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "remotion": "^4.0.419"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
