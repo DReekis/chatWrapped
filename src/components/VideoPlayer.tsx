@@ -52,7 +52,19 @@ export default function VideoPlayer({ result, onClose }: VideoPlayerProps) {
         dryTextByUser: result.deepStats?.dryTextByUser,
         longMessageByUser: result.deepStats?.longMessageByUser,
         ghostingScore: result.deepStats?.ghostingScore,
-        ghostingByUser: result.deepStats?.ghostingByUser
+        ghostingByUser: result.deepStats?.ghostingByUser,
+        // Viral stats
+        redFlagCount: result.viralStats?.redFlagCount,
+        redFlagByUser: result.viralStats?.redFlagByUser,
+        topRedFlags: result.viralStats?.topRedFlags,
+        apologyCount: result.viralStats?.apologyCount,
+        apologyByUser: result.viralStats?.apologyByUser,
+        jealousyCount: result.viralStats?.jealousyCount,
+        jealousyByUser: result.viralStats?.jealousyByUser,
+        mainCharacterScore: result.viralStats?.mainCharacterScore,
+        loveScore: result.viralStats?.loveScore,
+        compatibilityScore: result.viralStats?.compatibilityScore,
+        compatibilityVerdict: result.viralStats?.compatibilityVerdict
     };
 
     const handleDownload = async () => {
@@ -82,14 +94,14 @@ export default function VideoPlayer({ result, onClose }: VideoPlayerProps) {
             </button>
 
             {/* Title */}
-            <h2 className="text-2xl font-bold text-white mb-4">Your Ishq Audit Video 🎬</h2>
+            <h2 className="text-2xl font-bold text-white mb-4">Your ChatWrapped Video 🎬</h2>
 
             {/* Remotion Player */}
             <div className="rounded-2xl overflow-hidden shadow-2xl shadow-pink-500/20">
                 <Player
-                    component={IshqAuditVideo}
-                    inputProps={videoProps}
-                    durationInFrames={1200}
+                    component={IshqAuditVideo as unknown as React.ComponentType<Record<string, unknown>>}
+                    inputProps={videoProps as unknown as Record<string, unknown>}
+                    durationInFrames={1500}
                     compositionWidth={1080}
                     compositionHeight={1920}
                     fps={30}

@@ -42,13 +42,13 @@ export const RemotionRoot: React.FC = () => {
     return (
         <>
             <Composition
-                id="IshqAuditVideo"
-                component={IshqAuditVideo}
+                id="ChatWrappedVideo"
+                component={IshqAuditVideo as unknown as React.ComponentType<Record<string, unknown>>}
                 durationInFrames={1500} // 50 seconds at 30fps (12 scenes)
                 fps={30}
                 width={1080}
                 height={1920}
-                defaultProps={defaultProps}
+                defaultProps={defaultProps as Record<string, unknown>}
             />
         </>
     );
