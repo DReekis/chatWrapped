@@ -644,6 +644,27 @@ function calculateViralStats(
     partnerA: string,
     partnerB: string
 ): ViralStats {
+    // Helper function to match keywords with word boundaries
+    // This prevents 'k' from matching 'book', 'fine' from matching 'define'
+    const matchesKeyword = (text: string, keyword: string): boolean => {
+        const lowerText = text.toLowerCase();
+        const lowerKeyword = keyword.toLowerCase();
+
+        // For single characters like 'k', only match if it's the entire message or standalone
+        if (lowerKeyword.length === 1) {
+            return lowerText === lowerKeyword ||
+                lowerText.startsWith(lowerKeyword + ' ') ||
+                lowerText.endsWith(' ' + lowerKeyword) ||
+                lowerText.includes(' ' + lowerKeyword + ' ');
+        }
+
+        // For longer keywords, use word boundary matching
+        // Escape special regex characters
+        const escaped = lowerKeyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const regex = new RegExp(`(^|\\s|[^a-z])${escaped}($|\\s|[^a-z])`, 'i');
+        return regex.test(lowerText);
+    };
+
     const allRedFlags = getAllKeywords(redFlagKeywords);
     const allApologies = getAllKeywords(apologyKeywords);
     const allJealousy = getAllKeywords(jealousyKeywords);
@@ -680,9 +701,9 @@ function calculateViralStats(
         const sender = msg.sender;
         totalMessagesByUser[sender] = (totalMessagesByUser[sender] || 0) + 1;
 
-        // Red flags
+        // Red flags - use word boundary matching
         for (const keyword of allRedFlags) {
-            if (lowerMsg.includes(keyword.toLowerCase())) {
+            if (matchesKeyword(msg.message, keyword)) {
                 stats.redFlagCount++;
                 stats.redFlagByUser[sender] = (stats.redFlagByUser[sender] || 0) + 1;
                 redFlagFound[keyword] = (redFlagFound[keyword] || 0) + 1;
@@ -690,25 +711,25 @@ function calculateViralStats(
             }
         }
 
-        // Apologies
+        // Apologies - use word boundary matching
         for (const keyword of allApologies) {
-            if (lowerMsg.includes(keyword.toLowerCase())) {
+            if (matchesKeyword(msg.message, keyword)) {
                 stats.apologyCount++;
                 stats.apologyByUser[sender] = (stats.apologyByUser[sender] || 0) + 1;
                 break;
             }
         }
 
-        // Jealousy
+        // Jealousy - use word boundary matching
         for (const keyword of allJealousy) {
-            if (lowerMsg.includes(keyword.toLowerCase())) {
+            if (matchesKeyword(msg.message, keyword)) {
                 stats.jealousyCount++;
                 stats.jealousyByUser[sender] = (stats.jealousyByUser[sender] || 0) + 1;
                 break;
             }
         }
 
-        // Self-focused (Main Character)
+        // Self-focused (Main Character) - use includes for these as they're common words
         for (const keyword of allSelfFocused) {
             if (lowerMsg.includes(keyword.toLowerCase())) {
                 selfFocusedCount[sender] = (selfFocusedCount[sender] || 0) + 1;
@@ -716,28 +737,30 @@ function calculateViralStats(
             }
         }
 
-        // Conversation killer (short replies)
+        // Conversation killer (short replies) - for these, match exact or near-exact
         const isShortReply = msg.wordCount <= 2;
-        for (const keyword of allConvoKillers) {
-            if (lowerMsg === keyword.toLowerCase() || (isShortReply && lowerMsg.includes(keyword.toLowerCase()))) {
-                stats.convoKillerCount++;
-                stats.convoKillerByUser[sender] = (stats.convoKillerByUser[sender] || 0) + 1;
-                break;
+        if (isShortReply) {
+            for (const keyword of allConvoKillers) {
+                if (lowerMsg === keyword.toLowerCase() || lowerMsg.trim() === keyword.toLowerCase()) {
+                    stats.convoKillerCount++;
+                    stats.convoKillerByUser[sender] = (stats.convoKillerByUser[sender] || 0) + 1;
+                    break;
+                }
             }
         }
 
-        // Love expressions
+        // Love expressions - use word boundary matching
         for (const keyword of allLove) {
-            if (lowerMsg.includes(keyword.toLowerCase())) {
+            if (matchesKeyword(msg.message, keyword)) {
                 stats.loveScore++;
                 stats.loveByUser[sender] = (stats.loveByUser[sender] || 0) + 1;
                 break;
             }
         }
 
-        // Flirty messages
+        // Flirty messages - use word boundary matching
         for (const keyword of allFlirty) {
-            if (lowerMsg.includes(keyword.toLowerCase())) {
+            if (matchesKeyword(msg.message, keyword)) {
                 stats.flirtScore++;
                 stats.flirtByUser[sender] = (stats.flirtByUser[sender] || 0) + 1;
                 break;

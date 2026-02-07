@@ -5,45 +5,44 @@
 
 // ===== 🚩 RED FLAG KEYWORDS =====
 // Passive-aggressive phrases, concerning patterns
+// These should be clearly passive-aggressive, not everyday words
 export const redFlagKeywords = {
-    // English
+    // English - focused on clear passive-aggressive phrases
     en: [
-        'fine', 'whatever', 'k', 'okay then', 'do what you want',
-        'we need to talk', 'you always', 'you never', 'i dont care',
-        'leave me alone', 'forget it', 'nevermind', 'its nothing',
-        'im fine', 'sure', 'if you say so', 'you tell me',
-        'nothing', 'its okay', 'dont worry about it'
+        'whatever', 'k', 'okay then', 'do what you want', 'do whatever you want',
+        'we need to talk', 'you always', 'you never', 'i dont care', "i don't care",
+        'leave me alone', 'forget it', 'nevermind', 'never mind', 'its nothing', "it's nothing",
+        'if you say so', 'im fine', "i'm fine", 'its fine', "it's fine",
+        'nothing is wrong', 'nothings wrong', 'dont worry about it', "don't worry about it"
     ],
-    // Hindi
+    // Hindi - clear passive-aggressive phrases
     hi: [
-        'theek hai', 'ठीक है', 'kuch nahi', 'कुछ नहीं', 'jo marzi',
+        'theek hai', 'ठीक है', 'kuch nahi', 'कुछ नहीं', 'jo marzi', 'jo marji',
         'जो मर्ज़ी', 'mujhe kya', 'मुझे क्या', 'chhod do', 'छोड़ दो',
-        'rehne do', 'रहने दो', 'koi baat nahi', 'कोई बात नहीं',
-        'tum hamesha', 'तुम हमेशा', 'tum kabhi nahi', 'तुम कभी नहीं',
+        'rehne do', 'रहने दो', 'tum hamesha', 'तुम हमेशा', 'tum kabhi nahi',
         'mujhe farak nahi padta', 'jaisa tumhe theek lage', 'mat karo',
-        'hmm', 'haan haan', 'acha', 'acha theek hai', 'dekh lenge',
-        'jo ho raha hai hone do', 'meri kisiko parwah nahi'
+        'jo ho raha hai hone do', 'meri kisiko parwah nahi', 'koi baat nahi'
     ],
     // Tamil
     ta: [
-        'சரி', 'sari', 'paravailla', 'பரவாயில்ல', 'onnum illa',
-        'ஒன்னும் இல்ல', 'vidunga', 'விடுங்க', 'podhum', 'போதும்',
-        'enna venumnaalum pannunga', 'unga ishtam', 'ok ok'
+        'paravailla', 'பரவாயில்ல', 'onnum illa', 'ஒன்னும் இல்ல',
+        'vidunga', 'விடுங்க', 'podhum', 'போதும்',
+        'enna venumnaalum pannunga', 'unga ishtam'
     ],
     // Telugu
     te: [
-        'సరే', 'sare', 'parledu', 'పర్లేదు', 'em ledu', 'ఏం లేదు',
+        'parledu', 'పర్లేదు', 'em ledu', 'ఏం లేదు',
         'vaddu', 'వద్దు', 'nee ishtam', 'నీ ఇష్టం', 'chalu', 'చాలు'
     ],
     // Bengali
     bn: [
-        'thik ache', 'ঠিক আছে', 'kichu na', 'কিছু না', 'jeta khushi',
-        'যেটা খুশি', 'chere dao', 'ছেড়ে দাও', 'hoye gelo', 'হয়ে গেল'
+        'kichu na', 'কিছু না', 'jeta khushi', 'যেটা খুশি',
+        'chere dao', 'ছেড়ে দাও', 'hoye gelo', 'হয়ে গেল'
     ],
     // Marathi
     mr: [
-        'ठीक आहे', 'theek aahe', 'काही नाही', 'kahi nahi', 'तुझी मर्जी',
-        'tuzhi marzi', 'सोड', 'sod', 'rahude', 'राहू दे'
+        'काही नाही', 'kahi nahi', 'तुझी मर्जी', 'tuzhi marzi',
+        'सोड', 'sod', 'rahude', 'राहू दे'
     ]
 };
 
