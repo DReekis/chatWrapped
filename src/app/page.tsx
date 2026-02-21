@@ -4,13 +4,13 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import SafeModeBadge from '@/components/SafeModeBadge';
 import UploadForm from '@/components/UploadForm';
-import ResultsDisplay from '@/components/ResultsDisplay';
+import EPSResultsDisplay from '@/components/EPSResultsDisplay';
 import SeoManager from '@/components/SeoManager';
-import { AnalysisResult } from '@/lib/parseChat';
 import { landingPageTitles } from '@/lib/sentiment_data';
+import type { EPSResult } from '@/lib/eps/types';
 
 export default function Home() {
-  const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
+  const [analysisResult, setAnalysisResult] = useState<EPSResult | null>(null);
   const [currentTitle, setCurrentTitle] = useState(0);
 
   // Rotate titles for A/B testing effect
@@ -21,7 +21,7 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  const handleAnalysisComplete = (result: AnalysisResult) => {
+  const handleAnalysisComplete = (result: EPSResult) => {
     setAnalysisResult(result);
   };
 
@@ -33,11 +33,8 @@ export default function Home() {
   if (analysisResult) {
     return (
       <>
-        <SeoManager
-          detectedLanguage={analysisResult.language.dominantLanguage}
-          isResultsPage={true}
-        />
-        <ResultsDisplay result={analysisResult} onReset={handleReset} />
+        <SeoManager isResultsPage={true} />
+        <EPSResultsDisplay result={analysisResult} onReset={handleReset} />
       </>
     );
   }

@@ -2,10 +2,12 @@
 
 import { useState, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { parseChat, AnalysisResult, CustomNicknames, extractFromZip, isZipFile } from '@/lib/parseChat';
+import { extractFromZip, isZipFile } from '@/lib/parseChat';
+import { analyzeChatTextWithEPS } from '@/lib/eps/main';
+import type { EPSResult } from '@/lib/eps/types';
 
 interface UploadFormProps {
-    onAnalysisComplete: (result: AnalysisResult) => void;
+    onAnalysisComplete: (result: EPSResult) => void;
 }
 
 export default function UploadForm({ onAnalysisComplete }: UploadFormProps) {
@@ -19,7 +21,7 @@ export default function UploadForm({ onAnalysisComplete }: UploadFormProps) {
     const [showHelpModal, setShowHelpModal] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
-    const processFile = useCallback(async (file: File, skipNicknames = false) => {
+    const processFile = useCallback(async (file: File) => {
         setIsProcessing(true);
         setError(null);
 
@@ -35,20 +37,8 @@ export default function UploadForm({ onAnalysisComplete }: UploadFormProps) {
                 throw new Error('Please upload a .txt or .zip file (WhatsApp export)');
             }
 
-            // Parse custom nicknames
-            const customNicknames: CustomNicknames = {
-                partnerA_Nicknames: partnerANicknames
-                    .split(',')
-                    .map(n => n.trim())
-                    .filter(n => n.length > 0),
-                partnerB_Nicknames: partnerBNicknames
-                    .split(',')
-                    .map(n => n.trim())
-                    .filter(n => n.length > 0)
-            };
-
-            // Parse the chat
-            const result = parseChat(content, customNicknames);
+            // Run worker-based EPS analysis (offline, non-blocking).
+            const result = await analyzeChatTextWithEPS(content);
             onAnalysisComplete(result);
 
         } catch (err) {
@@ -57,7 +47,7 @@ export default function UploadForm({ onAnalysisComplete }: UploadFormProps) {
         } finally {
             setIsProcessing(false);
         }
-    }, [partnerANicknames, partnerBNicknames, onAnalysisComplete]);
+    }, [onAnalysisComplete]);
 
     const handleFileUpload = useCallback((file: File) => {
         setPendingFile(file);
@@ -94,7 +84,7 @@ export default function UploadForm({ onAnalysisComplete }: UploadFormProps) {
 
     const handleSkip = () => {
         if (pendingFile) {
-            processFile(pendingFile, true);
+            processFile(pendingFile);
         }
     };
 

@@ -14,6 +14,7 @@ import {
     flirtyKeywords,
     getAllKeywords
 } from './viral_keywords';
+import { calculateRSM, RSMResult } from './relationshipModel';
 
 // Custom nicknames input from user
 export interface CustomNicknames {
@@ -123,6 +124,9 @@ export interface AnalysisResult {
     // Partner names
     partnerA: string;
     partnerB: string;
+
+    // RSM (Relationship Synergy Model)
+    rsm: RSMResult;
 }
 
 // Regex patterns for WhatsApp formats
@@ -270,6 +274,9 @@ export function parseChat(
     // Calculate viral audit stats
     const viralStats = calculateViralStats(messages, partnerA, partnerB);
 
+    // Calculate RSM (Relationship Synergy Model)
+    const rsm = calculateRSM(messages, partnerA, partnerB);
+
     return {
         totalMessages: messages.length,
         messagesByUser,
@@ -289,7 +296,8 @@ export function parseChat(
         mostActiveHour,
         emojiCount,
         partnerA,
-        partnerB
+        partnerB,
+        rsm
     };
 }
 
